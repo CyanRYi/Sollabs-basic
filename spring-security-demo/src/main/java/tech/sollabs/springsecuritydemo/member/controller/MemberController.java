@@ -28,6 +28,6 @@ public class MemberController {
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
   public void registerMember(@RequestBody Member member) {
-    // 잠시후에 구현
+    service.createMember(member);
   }
 }
