@@ -10,11 +10,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import tech.sollabs.springsecuritydemo.configuration.security.AuthenticationHandler;
 import tech.sollabs.springsecuritydemo.configuration.security.DatabaseUserDetailsService;
+import tech.sollabs.springsecuritydemo.configuration.security.JsonLoginConfigurer;
 import tech.sollabs.springsecuritydemo.member.repository.MemberRepository;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+  private AuthenticationHandler authenticationHandler = new AuthenticationHandler();
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -25,7 +29,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             requests ->
                 requests.antMatchers(HttpMethod.POST, "/api/register").anonymous()
                     .anyRequest().authenticated())
-        .formLogin();
+        .apply(new JsonLoginConfigurer<>())
+        .successHandler(authenticationHandler)
+        .failureHandler(authenticationHandler);
   }
 
   @Bean

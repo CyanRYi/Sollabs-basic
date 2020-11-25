@@ -12,6 +12,8 @@ repositories {
     mavenCentral()
 }
 
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
